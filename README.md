@@ -91,7 +91,7 @@ See [**esphome/generator.yaml**](esphome/generator.yaml) for the code.
 
 I run genmon in an LXC container under [Proxmox](https://www.proxmox.com/), on Alpine 3.11
 
-1. `apk add bash python3 sudo make gcc build-base libressl-dev python3-dev rust py3-pip`
+1. `apk add bash python3 sudo make gcc build-base libressl-dev python3-dev rust py3-pip libffi-dev python3-dev cargo cmake git`
 2. `pip install -U pip` (needs v22+ for the python `cryptography` package)
 3. `cd /opt && git clone https://github.com/jgyates/genmon.git && cd /opt/genmon`
 4. `./genmonmaint.sh -i`
