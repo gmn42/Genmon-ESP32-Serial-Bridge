@@ -89,23 +89,32 @@ See [**esphome/generator.yaml**](esphome/generator.yaml) for the code.
 
 ### Install on Alpine Linux
 
-I run genmon in an LXC container under [Proxmox](https://www.proxmox.com/), on Alpine 3.11
+To install genmon in an Alpine Linux LXC container under [Proxmox](https://www.proxmox.com/):
 
-1. `apk add bash python3 sudo make gcc build-base libressl-dev python3-dev rust py3-pip libffi-dev python3-dev cargo cmake git`
-2. `pip install -U pip` (needs v22+ for the python `cryptography` package)
-3. `cd /opt && git clone https://github.com/jgyates/genmon.git && cd /opt/genmon`
-4. `./genmonmaint.sh -i`
+1. Create an unprivileged CT using the default alpine template (tested with version 3.18).
+2. As root on the container, run:
+   * `setup-timezone` and select your local time zone (so generator time can be set correctly)
+   * `apk add bash python3 sudo make gcc build-base libressl-dev python3-dev rust py3-pip`
+   * `apk add libffi-dev python3-dev cargo cmake git`
+   * `pip install -U pip` (needs v22+ for the python `cryptography` package)
+   * `cd /opt && git clone https://github.com/jgyates/genmon.git && cd /opt/genmon`
+   * `./genmonmaint.sh -i` and answer the questions at the end as follows:
+     * Copy configuration files: _Yes_
+     * Setup raspberry pi serial port: _No_
+     * Start genmon on boot: _Yes_
+3. Edit `/etc/genmon/genmon.conf` and change the `use_serial_tcp` option to **True**.  Other setting changes can done through the UI, but genmon won't start with the (missing) serial port configured).
+5. Run `./startgenmon.sh start` (or just restart the container).
  
 ### Configuration
 
-Start genmon, and in the UI, set:
+Connect to `http://<container IP:8000` and on the settings page, set:
 
-* **Serial Server TCP/IP Address** = IP of the ESP32
+* **Serial Server TCP/IP Address** = IP (or hostname) of the ESP32
 * **Serial Server TCP/IP port** = `6638` (or whatever port the ESP32 stream server uses)
 
 _This can also be done via `/etc/genmon/genmon.conf`_
 
-Addons:
+Under Addons:
 
 * Enable **MQTT** and configure server address
 * **Blacklist Filter** = `Run Time,Monitor Time,Generator Time,Platform Stats,Communication Stats`
