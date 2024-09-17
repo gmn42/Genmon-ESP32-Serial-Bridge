@@ -104,7 +104,12 @@ mqtt:
       state_topic: 'generator/Status/Engine/Output Power (Single Phase)/value'   # if JSON numerics
       # this is normalized to watts from kilowatts
       value_template: '{{ value | float * 1000 | round(0) }}'
-  
+
+    - unique_id: "c41168e8-fadb-4d09-9248-81181f9dc5e0"
+      expire_after: 300   # genmon MQTT flushes out MQTT updated every 60 seconds
+      name: Generator System In Alarm
+      state_topic: 'generator/Status/Engine/System In Alarm'
+      
     - unique_id: "8cb64471-9123-48f6-b9be-15c01595981e"
       expire_after: 300   # genmon MQTT flushes out MQTT updated every 60 seconds
       name: Generator Last Alarm Log
